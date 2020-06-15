@@ -125,7 +125,7 @@ if __name__ == '__main__':
         if os.path.exists(save_path):
             with open(save_path) as f:
                 file_content = f.read()
-            if hashlib.sha1(file_content).hexdigest() == sha1_hex:
+            if hashlib.sha1(file_content.encode('utf-8')).hexdigest() == sha1_hex:
                 print('[*] {} already exists'.format(save_path))
                 continue
             else:
