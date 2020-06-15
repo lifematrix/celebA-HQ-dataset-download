@@ -52,7 +52,7 @@ class ThreadPool(object):
         self.task_queue = Queue.Queue()
         self.result_queues = dict()
         self.num_threads = num_threads
-        for idx in xrange(self.num_threads):
+        for idx in range(self.num_threads):
             thread = WorkerThread(self.task_queue)
             thread.daemon = True
             thread.start()
@@ -68,12 +68,12 @@ class ThreadPool(object):
         result, args = self.result_queues[func].get()
         if isinstance(result, ExceptionInfo):
             if verbose_exceptions:
-                print '\n\nWorker thread caught an exception:\n' + result.traceback + '\n',
-            raise result.type, result.value
+                print('\n\nWorker thread caught an exception:\n' + result.traceback + '\n',)
+            raise result
         return result, args
 
     def finish(self):
-        for idx in xrange(self.num_threads):
+        for idx in range(self.num_threads):
             self.task_queue.put((None, (), None))
 
     def __enter__(self):  # for 'with' statement
@@ -126,12 +126,11 @@ def create_celeba_hq(celeba_dir,
                      output_dir,
                      num_threads=4,
                      num_tasks=100):
-    print 'Loading CelebA data from %s' % celeba_dir
+    print('Loading CelebA data from %s' % celeba_dir)
     glob_pattern = os.path.join(celeba_dir, 'img_celeba', '*.jpg')
     glob_expected = 202599
     if len(glob.glob(glob_pattern)) != glob_expected:
-        print 'Error: Expected to find %d images in %s' % (glob_expected,
-                                                           glob_pattern)
+        print('Error: Expected to find %d images in %s' % (glob_expected, glob_pattern))
         return
     with open(
             os.path.join(celeba_dir, 'Anno', 'list_landmarks_celeba.txt'),
@@ -146,7 +145,7 @@ def create_celeba_hq(celeba_dir,
         landmarks = np.array(landmarks)
         print(landmarks.shape)
 
-    print 'Loading CelebA-HQ deltas from %s' % delta_dir
+    print('Loading CelebA-HQ deltas from %s' % delta_dir)
     import hashlib
     import bz2
     import zipfile
@@ -158,8 +157,7 @@ def create_celeba_hq(celeba_dir,
     glob_pattern = os.path.join(delta_dir, 'delta*.zip')
     glob_expected = 30
     if len(glob.glob(glob_pattern)) != glob_expected:
-        print 'Error: Expected to find %d zips in %s' % (glob_expected,
-                                                         glob_pattern)
+        print('Error: Expected to find %d zips in %s' % (glob_expected, glob_pattern))
         return
     with open(os.path.join(delta_dir, 'image_list.txt'), 'rt') as file:
         lines = [line.split() for line in file]

@@ -32,7 +32,6 @@ def checksum(filename, method='sha1'):
         return hashlib.md5(data).hexdigest()
     else:
         raise ValueError('Invalid method: %s' % method)
-    return None
 
 
 def download(url, target_dir, filename=None):
