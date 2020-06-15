@@ -10,7 +10,7 @@ import sys
 import glob
 import argparse
 import threading
-import Queue
+import queue
 import traceback
 import numpy as np
 import scipy.ndimage
@@ -49,7 +49,7 @@ class WorkerThread(threading.Thread):
 class ThreadPool(object):
     def __init__(self, num_threads):
         assert num_threads >= 1
-        self.task_queue = Queue.Queue()
+        self.task_queue = queue.Queue()
         self.result_queues = dict()
         self.num_threads = num_threads
         for idx in range(self.num_threads):
@@ -60,7 +60,7 @@ class ThreadPool(object):
     def add_task(self, func, args=()):
         assert hasattr(func, '__call__')  # must be a function
         if func not in self.result_queues:
-            self.result_queues[func] = Queue.Queue()
+            self.result_queues[func] = queue.Queue()
         self.task_queue.put((func, args, self.result_queues[func]))
 
     def get_result(self, func,
